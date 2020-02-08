@@ -2,7 +2,7 @@
   <div>
     <head-top>
       <template #logo>
-        <span class="head_logo">
+        <span class="head_logo" @click="reload">
           ybf.elm
         </span>
       </template>
@@ -25,37 +25,19 @@
     <section id="hot_city_container">
       <h4 class="city_title">热门城市</h4>
       <ul class="citylistul clear">
-        <router-link
-          tag="li"
-          v-for="item in hotcity"
-          :to="'/city/' + item.id"
-          :key="item.id"
-        >
+        <li v-for="(item, index) in hotcity" :key="index">
           {{ item.name }}
-        </router-link>
+        </li>
       </ul>
     </section>
     <section class="group_city_container">
       <ul class="letter_classify">
-        <li
-          v-for="(value, key, index) in sortgroupcity"
-          :key="key"
-          class="letter_classify_li"
-        >
+        <li>
           <h4 class="city_title">
-            {{ key }}
-            <span v-if="index == 0">（按字母排序）</span>
+            <span>（按字母排序）</span>
           </h4>
           <ul class="groupcity_name_container citylistul clear">
-            <router-link
-              tag="li"
-              v-for="item in value"
-              :to="'/city/' + item.id"
-              :key="item.id"
-              class="ellipsis"
-            >
-              {{ item.name }}
-            </router-link>
+            <li class="ellipsis"></li>
           </ul>
         </li>
       </ul>
@@ -64,6 +46,7 @@
 </template>
 <script>
 import headTop from '../../components/header/head'
+import { hotcity } from '../../service/getData'
 export default {
   name: 'Home',
   components: { headTop },
@@ -73,6 +56,16 @@ export default {
       guessCityid: '', //当前城市id
       hotcity: [], //热门城市列表
       groupcity: {} //所有城市列表
+    }
+  },
+  mounted() {
+    hotcity().then(res => {
+      this.hotcity = res.data
+    })
+  },
+  methods: {
+    reload() {
+      console.log(process.env.VUE_APP_baseUrl)
     }
   }
 }
