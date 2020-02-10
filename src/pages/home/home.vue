@@ -32,12 +32,15 @@
     </section>
     <section class="group_city_container">
       <ul class="letter_classify">
-        <li>
+        <li v-for="(value, key, index) in sortgroupcity" :key="key">
           <h4 class="city_title">
-            <span>（按字母排序）</span>
+            {{ key }}
+            <span v-if="index == 0">（按字母排序）</span>
           </h4>
           <ul class="groupcity_name_container citylistul clear">
-            <li class="ellipsis"></li>
+            <li v-for="item in value" :key="item.id" class="ellipsis">
+              {{ item.name }}
+            </li>
           </ul>
         </li>
       </ul>
@@ -46,7 +49,7 @@
 </template>
 <script>
 import headTop from '../../components/header/head'
-import { hotcity } from '../../service/getData'
+import { hotcity, groupcity } from '../../service/getData'
 export default {
   name: 'Home',
   components: { headTop },
@@ -62,10 +65,26 @@ export default {
     hotcity().then(res => {
       this.hotcity = res.data
     })
+    groupcity().then(res => {
+      this.groupcity = res.data
+    })
   },
   methods: {
     reload() {
-      console.log(process.env.VUE_APP_baseUrl)
+      window.location.reload()
+    }
+  },
+  computed: {
+    sortgroupcity() {
+      let sortobj = {}
+      for (let i = 65; i <= 90; i++) {
+        if (this.groupcity[String.fromCharCode(i)]) {
+          sortobj[String.fromCharCode(i)] = this.groupcity[
+            String.fromCharCode(i)
+          ]
+        }
+      }
+      return sortobj
     }
   }
 }
