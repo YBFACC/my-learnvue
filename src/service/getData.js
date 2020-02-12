@@ -11,3 +11,9 @@ export const hotcity = () => axios.get(baseUrl + '/v1/cities?type=hot')
  * 获取首页所有城市
  */
 export const groupcity = () => axios.get(baseUrl + '/v1/cities?type=group')
+
+/**
+ * 获取首页默认地址
+ */
+
+export const cityGuess = () => axios.get(baseUrl + '/v1/cities?type=guess')

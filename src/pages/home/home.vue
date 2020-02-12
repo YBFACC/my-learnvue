@@ -12,8 +12,8 @@
         <span>当前定位城市：</span>
         <span>定位不准时，请在城市列表中选择</span>
       </div>
-      <router-link :to="'/'" class="guess_city">
-        <span>南京</span>
+      <router-link :to="'/city/' + guessCityid" class="guess_city">
+        <span>{{ guessCity }}</span>
         <svg class="arrow_right">
           <use
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -64,7 +64,7 @@
 </template>
 <script>
 import headTop from '../../components/header/head'
-import { hotcity, groupcity } from '../../service/getData'
+import { hotcity, groupcity, cityGuess } from '../../service/getData'
 export default {
   name: 'Home',
   components: { headTop },
@@ -82,6 +82,11 @@ export default {
     })
     groupcity().then(res => {
       this.groupcity = res.data
+    })
+    cityGuess().then(res => {
+      console.log(res)
+      this.guessCity = res.data.name
+      this.guessCityid = res.data.id
     })
   },
   methods: {
