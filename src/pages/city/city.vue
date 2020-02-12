@@ -1,6 +1,6 @@
 <template>
   <div class="city_container">
-    <head-top head-title="北京">
+    <head-top head-title="北京" go-back='true'>
       <template #changecity>
         <router-link to="/home" class="change_city">切换城市</router-link>
       </template>
