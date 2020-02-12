@@ -25,22 +25,37 @@
     <section id="hot_city_container">
       <h4 class="city_title">热门城市</h4>
       <ul class="citylistul clear">
-        <li v-for="(item, index) in hotcity" :key="index">
+        <router-link
+          tag="li"
+          :to="'/city/' + item.id"
+          v-for="(item, index) in hotcity"
+          :key="index"
+        >
           {{ item.name }}
-        </li>
+        </router-link>
       </ul>
     </section>
     <section class="group_city_container">
       <ul class="letter_classify">
-        <li v-for="(value, key, index) in sortgroupcity" :key="key">
+        <li
+          v-for="(value, key, index) in sortgroupcity"
+          :key="key"
+          class="letter_classify_li"
+        >
           <h4 class="city_title">
             {{ key }}
             <span v-if="index == 0">（按字母排序）</span>
           </h4>
           <ul class="groupcity_name_container citylistul clear">
-            <li v-for="item in value" :key="item.id" class="ellipsis">
+            <router-link
+              tag="li"
+              v-for="item in value"
+              :key="item.id"
+              :to="'/city/' + item.id"
+              class="ellipsis"
+            >
               {{ item.name }}
-            </li>
+            </router-link>
           </ul>
         </li>
       </ul>
