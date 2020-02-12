@@ -4,14 +4,19 @@
     <slot name="search"></slot
     ><!--？？-->
     <div class="head_login">
-      <span class="login_span">登录|注册</span>
+      <span class="login_span"></span>
     </div>
+    <section class="title_head ellipsis" v-if="headTitle">
+      <span class="title_text">{{ headTitle }}</span>
+    </section>
+    <slot name="changecity"></slot>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'Head'
+  name: 'Head',
+  props: ['headTitle']
 }
 </script>
 <style lang="scss" scoped>
