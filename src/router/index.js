@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 const Home = () => import('../pages/home/home.vue')
 const City = () => import('../pages/city/city.vue')
+const msite = () => import('../pages/msite/msite.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,6 +15,11 @@ const routes = [
   {
     path: '/city/:cityid',
     component: City
+  },
+  {
+    path: '/msite',
+    component: msite,
+    meta: { keepAlive: true }
   }
 ]
 
