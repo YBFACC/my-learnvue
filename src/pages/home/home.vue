@@ -84,7 +84,6 @@ export default {
       this.groupcity = res.data
     })
     cityGuess().then(res => {
-      console.log(res)
       this.guessCity = res.data.name
       this.guessCityid = res.data.id
     })
