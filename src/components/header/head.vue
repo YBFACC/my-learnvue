@@ -5,7 +5,7 @@
     <section class="head_goback" v-if="goBack" @click="$router.go(-1)">
       <go-back></go-back>
     </section>
-    <router-link to="/login" class="head_login">
+    <router-link to="/login" class="head_login" v-if="signinUp">
       <span class="login_span">登录|注册</span>
     </router-link>
     <section class="title_head ellipsis" v-if="headTitle">
@@ -19,7 +19,7 @@
 import GoBack from '@/components/svg/goback.vue'
 export default {
   name: 'Head',
-  props: ['signinUp', 'headTitle', 'goBack'],
+  props: { signinUp: String, headTitle: String, goBack: String },
   components: {
     GoBack
   }
