@@ -1,6 +1,6 @@
 <template>
   <div>
-    <head-top>
+    <head-top signin-up="home">
       <template #logo>
         <span class="head_logo" @click="reload">
           ybf.elm
