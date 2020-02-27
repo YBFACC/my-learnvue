@@ -1,9 +1,29 @@
 <template>
   <div class="loginContainer">
-    <head-top
-      :head-title="loginWay ? '登录' : '密码登录'"
-      goBack="true"
-    ></head-top>
+    <head-top head-title="密码登录" goBack="true"></head-top>
+    <form class="loginForm">
+      <section class="input_container">
+        <input type="text" placeholder="账号" v-model.lazy="userAccount" />
+      </section>
+      <section class="input_container">
+        <input type="password" placeholder="密码" v-model="passWord" />
+      </section>
+      <section class="input_container captcha_code_container">
+        <input
+          type="text"
+          placeholder="验证码"
+          maxlength="4"
+          v-model="codeNumber"
+        />
+      </section>
+    </form>
+    <p class="login_tips">
+      温馨提示：未注册过的账号，登录时将自动注册
+    </p>
+    <p class="login_tips">
+      注册过的用户可凭账号密码登录
+    </p>
+    <div class="login_container" @click="mobileLogin">登录</div>
   </div>
 </template>
 
@@ -14,6 +34,16 @@ export default {
   name: 'Login',
   components: {
     HeadTop
+  },
+  data() {
+    return {
+      userAccount: null, //用户名
+      passWord: null, //密码
+      codeNumber: null //验证码
+    }
+  },
+  methods: {
+    mobileLogin() {}
   }
 }
 </script>
