@@ -1,11 +1,20 @@
 <template>
-  <div class="loginContainer"></div>
+  <div class="loginContainer">
+    <head-top
+      :head-title="loginWay ? '登录' : '密码登录'"
+      goBack="true"
+    ></head-top>
+  </div>
 </template>
 
 <script>
+import HeadTop from '@/components/header/head'
 
 export default {
-  
+  name: 'Login',
+  components: {
+    HeadTop
+  }
 }
 </script>
 
