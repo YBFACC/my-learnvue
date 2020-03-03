@@ -37,3 +37,21 @@ export const searchplace = (cityid, value) =>
       'keyword=' +
       value
   )
+
+/**
+ * 获取图片验证码
+ */
+
+export const getcaptchas = () => axios.post(baseUrl + '/v1/captchas')
+
+/**
+ * 账号密码登录
+ */
+export const accountLogin = (username, password, captcha_code) => {
+  let data = {
+    username: username,
+    password: password,
+    captcha_code: captcha_code
+  }
+  return axios.post(baseUrl + '/v2/login', data)
+}
