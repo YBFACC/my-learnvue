@@ -60,7 +60,8 @@ export default {
       codeNumber: null, //验证码
       captchaCodeImg: null, //验证码地址
       showAlert: false, //显示提示组件
-      alertText: null //提示的内容
+      alertText: null, //提示的内容
+      userInfo: null //获取到的用户信息
     }
   },
   created() {
@@ -84,18 +85,15 @@ export default {
         return
       }
       //用户名登录
-      this.userInfo = await accountLogin(
-        this.userAccount,
-        this.passWord,
-        this.codeNumber
+      await accountLogin(this.userAccount, this.passWord, this.codeNumber).then(
+        res => (this.userInfo = res.data)
       )
+
       if (!this.userInfo.user_id) {
-        console.log(this.userInfo)
         this.showAlert = true
         this.alertText = this.userInfo.message
         if (!this.loginWay) this.getCaptchaCode()
       } else {
-        console.log(this.userInfo)
         this.RECORD_USERINFO(this.userInfo)
         this.$router.go(-1)
       }
