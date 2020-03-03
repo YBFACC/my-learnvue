@@ -1,5 +1,5 @@
 module.exports = {
   devServer: {
-    proxy: 'http://cangdu.org:8001'
+    proxy: 'http://localhost:8001'
   }
 }
