@@ -15,6 +15,13 @@
           maxlength="4"
           v-model="codeNumber"
         />
+        <div class="img_change_img">
+          <img v-show="captchaCodeImg" :src="captchaCodeImg" />
+          <div class="change_img" @click="getCaptchaCode">
+            <p>看不清</p>
+            <p>换一张</p>
+          </div>
+        </div>
       </section>
     </form>
     <p class="login_tips">
@@ -24,26 +31,83 @@
       注册过的用户可凭账号密码登录
     </p>
     <div class="login_container" @click="mobileLogin">登录</div>
+
+    <alert-tip
+      v-if="showAlert"
+      :showHide="showAlert"
+      @closeTip="closeTip"
+      :alertText="alertText"
+    ></alert-tip>
   </div>
 </template>
 
 <script>
 import HeadTop from '@/components/header/head'
+import AlertTip from '@/components/common/alertTip'
+import { mapMutations } from 'vuex'
+import { getcaptchas, accountLogin } from '@/service/getData'
 
 export default {
   name: 'Login',
   components: {
-    HeadTop
+    HeadTop,
+    AlertTip
   },
   data() {
     return {
       userAccount: null, //用户名
       passWord: null, //密码
-      codeNumber: null //验证码
+      codeNumber: null, //验证码
+      captchaCodeImg: null, //验证码地址
+      showAlert: false, //显示提示组件
+      alertText: null //提示的内容
     }
   },
+  created() {
+    this.getCaptchaCode()
+  },
   methods: {
-    mobileLogin() {}
+    ...mapMutations(['RECORD_USERINFO']),
+
+    async mobileLogin() {
+      if (!this.userAccount) {
+        this.showAlert = true
+        this.alertText = '请输入手机号/邮箱/用户名'
+        return
+      } else if (!this.passWord) {
+        this.showAlert = true
+        this.alertText = '请输入密码'
+        return
+      } else if (!this.codeNumber) {
+        this.showAlert = true
+        this.alertText = '请输入验证码'
+        return
+      }
+      //用户名登录
+      this.userInfo = await accountLogin(
+        this.userAccount,
+        this.passWord,
+        this.codeNumber
+      )
+      if (!this.userInfo.user_id) {
+        console.log(this.userInfo)
+        this.showAlert = true
+        this.alertText = this.userInfo.message
+        if (!this.loginWay) this.getCaptchaCode()
+      } else {
+        console.log(this.userInfo)
+        this.RECORD_USERINFO(this.userInfo)
+        this.$router.go(-1)
+      }
+    },
+    //获取验证吗，线上环境使用固定的图片，生产环境使用真实的验证码
+    async getCaptchaCode() {
+      let res = await getcaptchas()
+      this.captchaCodeImg = res.data.code
+    },
+    closeTip() {
+      this.showAlert = false
+    }
   }
 }
 </script>
