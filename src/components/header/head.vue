@@ -5,8 +5,18 @@
     <section class="head_goback" v-if="goBack" @click="$router.go(-1)">
       <go-back></go-back>
     </section>
-    <router-link to="/login" class="head_login" v-if="signinUp">
-      <span class="login_span">登录|注册</span>
+    <router-link
+      :to="this.userInfo ? '/profile' : '/login'"
+      class="head_login"
+      v-if="signinUp"
+    >
+      <svg class="user_avatar" v-if="userInfo">
+        <use
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xlink:href="#user"
+        ></use>
+      </svg>
+      <span class="login_span" v-else>登录|注册</span>
     </router-link>
     <section class="title_head ellipsis" v-if="headTitle">
       <span class="title_text">{{ headTitle }}</span>
@@ -17,11 +27,19 @@
 
 <script>
 import GoBack from '@/components/svg/goback.vue'
+import { mapState } from 'vuex'
 export default {
   name: 'Head',
   props: { signinUp: String, headTitle: String, goBack: String },
+
   components: {
     GoBack
+  },
+  mounted() {
+    this.$store.dispatch('getUserInfo')
+  },
+  computed: {
+    ...mapState(['userInfo'])
   }
 }
 </script>
