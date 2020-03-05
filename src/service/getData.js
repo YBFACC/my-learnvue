@@ -1,7 +1,7 @@
 const baseUrl = process.env.VUE_APP_baseUrl
 
 import axios from 'axios'
-
+import {getStore} from '@/config/mUtils.js'
 /**
  * 获取首页热门城市
  */
@@ -54,4 +54,13 @@ export const accountLogin = (username, password, captcha_code) => {
     captcha_code: captcha_code
   }
   return axios.post(baseUrl + '/v2/login', data)
+}
+
+/**
+ * 获取用户信息
+ */
+export const getUser = () => {
+  let data = getStore('user_id')
+  console.log(data)
+  return axios.get(baseUrl + '/v1/user?' + 'user_id=' + data)
 }
