@@ -45,13 +45,19 @@
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
     </nav>
+
+    <foot-guide></foot-guide>
   </div>
 </template>
 
 <script>
 import headTop from '@/components/header/head'
-import 'swiper/dist/css/swiper.css'
+import footGuide from '@/components/footer/footer'
 
+import { cityGuess, msiteAddress } from '../../service/getData'
+import { mapMutations } from 'vuex'
+
+import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
   data() {
@@ -59,7 +65,7 @@ export default {
       geohash: '', // city页面传递过来的地址geohash
       foodTypes: [], // 食品分类列表
       msiteTitle: '请选择地址', // msite页面头部标题
-      imgBaseUrl: 'https://fuss10.elemecdn.com', //图片域名地址
+      hasGetData: false, //是否已经获取地理位置数据，成功之后再获取商铺列表信息
       swiperOption: {
         pagination: {
           type: 'fraction',
@@ -70,6 +76,7 @@ export default {
   },
   components: {
     headTop,
+    footGuide,
     swiper,
     swiperSlide
   },
@@ -78,9 +85,48 @@ export default {
       return this.$refs.mySwiper.swiper
     }
   },
+  methods: {
+    ...mapMutations(['RECORD_ADDRESS', 'SAVE_GEOHASH'])
+  },
+  async beforeMount() {
+    if (!this.$route.query.geohash) {
+      const address = await cityGuess()
+      this.geohash = address.latitude + ',' + address.longitude
+    } else {
+      this.geohash = this.$route.query.geohash
+    }
+    //保存geohash 到vuex
+    this.SAVE_GEOHASH(this.geohash)
+    //获取位置信息
+    let res = await msiteAddress(this.geohash)
+    this.msiteTitle = res.name
+    // 记录当前经度纬度
+    this.RECORD_ADDRESS(res)
+
+    this.hasGetData = true
+  },
   mounted() {
-    console.log('this is current swiper instance object', this.swiper)
+    //console.log('this is current swiper instance object', this.swiper)
     this.swiper.slideTo(0, 1000, false)
+
+    // //获取导航食品类型列表
+    // msiteFoodTypes(this.geohash)
+    //   .then(res => {
+    //     let resLength = res.length
+    //     let resArr = [...res] // 返回一个新的数组
+    //     let foodArr = []
+    //     for (let i = 0, j = 0; i < resLength; i += 8, j++) {
+    //       foodArr[j] = resArr.splice(0, 8)
+    //     }
+    //     this.foodTypes = foodArr
+    //   })
+    //   .then(() => {
+    //     //初始化swiper
+    //     new Swiper('.swiper-container', {
+    //       pagination: '.swiper-pagination',
+    //       loop: true
+    //     })
+    //   })
   }
 }
 </script>
