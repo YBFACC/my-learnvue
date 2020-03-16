@@ -70,3 +70,12 @@ export const getUser = () => {
  */
 
 export const msiteAddress = geohash => axios.get('/v2/pois/' + geohash)
+
+/**
+ * 获取msite页面食品分类列表
+ */
+
+export const msiteFoodTypes = geohash =>
+  axios.get(
+    '/v2/index_entry?geohash=' + geohash + '&&group_type=' + '1' + '&&flags[]=F'
+  )
