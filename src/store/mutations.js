@@ -1,4 +1,9 @@
-import { RECORD_USERINFO, GET_USERINFO, SAVE_GEOHASH } from './mutation-types'
+import {
+  RECORD_USERINFO,
+  GET_USERINFO,
+  SAVE_GEOHASH,
+  RECORD_ADDRESS
+} from './mutation-types'
 
 export default {
   [RECORD_USERINFO](state, info) {
@@ -21,5 +26,10 @@ export default {
   //保存geohash
   [SAVE_GEOHASH](state, geohash) {
     state.geohash = geohash
+  },
+  // 记录当前经度纬度
+  [RECORD_ADDRESS](state, { latitude, longitude }) {
+    state.latitude = latitude
+    state.longitude = longitude
   }
 }
