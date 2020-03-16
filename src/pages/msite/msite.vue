@@ -54,7 +54,7 @@
 import headTop from '@/components/header/head'
 import footGuide from '@/components/footer/footer'
 
-import { cityGuess, msiteAddress } from '../../service/getData'
+import { cityGuess, msiteAddress, msiteFoodTypes } from '../../service/getData'
 import { mapMutations } from 'vuex'
 
 import 'swiper/dist/css/swiper.css'
@@ -98,10 +98,13 @@ export default {
     //保存geohash 到vuex
     this.SAVE_GEOHASH(this.geohash)
     //获取位置信息
-    let res = await msiteAddress(this.geohash)
-    this.msiteTitle = res.name
+
+    msiteAddress(this.geohash).then(res => {
+      this.msiteTitle = res.data.name
+      this.RECORD_ADDRESS(res.data)
+    })
+
     // 记录当前经度纬度
-    this.RECORD_ADDRESS(res)
 
     this.hasGetData = true
   },
@@ -109,24 +112,10 @@ export default {
     //console.log('this is current swiper instance object', this.swiper)
     this.swiper.slideTo(0, 1000, false)
 
-    // //获取导航食品类型列表
-    // msiteFoodTypes(this.geohash)
-    //   .then(res => {
-    //     let resLength = res.length
-    //     let resArr = [...res] // 返回一个新的数组
-    //     let foodArr = []
-    //     for (let i = 0, j = 0; i < resLength; i += 8, j++) {
-    //       foodArr[j] = resArr.splice(0, 8)
-    //     }
-    //     this.foodTypes = foodArr
-    //   })
-    //   .then(() => {
-    //     //初始化swiper
-    //     new Swiper('.swiper-container', {
-    //       pagination: '.swiper-pagination',
-    //       loop: true
-    //     })
-    //   })
+    //获取导航食品类型列表
+    msiteFoodTypes(this.geohash).then(res => {
+      console.log(res)
+    })
   }
 }
 </script>
