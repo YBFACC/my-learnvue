@@ -8,7 +8,9 @@ Vue.use(Vuex)
 const state = {
   userInfo: null, //用户信息
   login: true, //是否登录
-  geohash: '31.22299,121.36025' //地址geohash值
+  geohash: '31.22299,121.36025', //地址geohash值
+  latitude: '', // 当前位置纬度
+  longitude: '' // 当前位置经度
 }
 
 export default new Vuex.Store({
