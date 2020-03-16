@@ -64,3 +64,9 @@ export const getUser = () => {
 
   return axios.get(baseUrl + '/v1/user?' + 'user_id=' + data)
 }
+
+/**
+ * 获取msite页面地址信息
+ */
+
+export const msiteAddress = geohash => axios.get('/v2/pois/' + geohash)
